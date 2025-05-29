@@ -95,7 +95,7 @@ export default function GPUCatalog() {
         {filteredGPUs.map((gpu) => (
           <Card key={gpu.id} className="overflow-hidden">
             <div className="aspect-video relative">
-              <Image src={gpu.image || "/placeholder.svg"} alt={gpu.name} fill className="object-cover" />
+              <Image src={gpu.image} alt={gpu.name} fill className="object-cover" />
             </div>
             <CardHeader>
               <div className="flex justify-between items-start">

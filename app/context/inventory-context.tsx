@@ -29,7 +29,7 @@ const initialGPUs: GPU[] = [
     memory: "24GB GDDR6X",
     price: 1599,
     stock: 15,
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/GeForce RTX 4090.png",
   },
   {
     id: "2",
@@ -39,7 +39,7 @@ const initialGPUs: GPU[] = [
     memory: "16GB GDDR6X",
     price: 1199,
     stock: 22,
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/GeForce RTX 4080.png",
   },
   {
     id: "3",
@@ -49,7 +49,7 @@ const initialGPUs: GPU[] = [
     memory: "24GB GDDR6",
     price: 999,
     stock: 18,
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/Radeon RX 7900 XTX.png",
   },
   {
     id: "4",
@@ -59,7 +59,7 @@ const initialGPUs: GPU[] = [
     memory: "12GB GDDR6X",
     price: 799,
     stock: 30,
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/GeForce RTX 4070 Ti.png",
   },
   {
     id: "5",
@@ -69,7 +69,7 @@ const initialGPUs: GPU[] = [
     memory: "16GB GDDR6",
     price: 649,
     stock: 25,
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/Radeon RX 7800 XT.jpg",
   },
   {
     id: "6",
@@ -79,7 +79,7 @@ const initialGPUs: GPU[] = [
     memory: "16GB GDDR6",
     price: 499,
     stock: 40,
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/GeForce RTX 4060 Ti.png",
   },
 ]
 

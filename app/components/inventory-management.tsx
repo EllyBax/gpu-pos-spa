@@ -32,7 +32,7 @@ export default function InventoryManagement() {
     memory: "",
     price: "",
     stock: "",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "",
   })
 
   const resetForm = () => {
@@ -43,7 +43,7 @@ export default function InventoryManagement() {
       memory: "",
       price: "",
       stock: "",
-      image: "/placeholder.svg?height=200&width=300",
+      image: "",
     })
   }
 
@@ -219,6 +219,15 @@ export default function InventoryManagement() {
                       value={formData.stock}
                       onChange={(e) => setFormData((prev) => ({ ...prev, stock: e.target.value }))}
                       required
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="image">Image URL</Label>
+                    <Input
+                      id="image"
+                      value={formData.image}
+                      onChange={(e) => setFormData((prev) => ({ ...prev, image: e.target.value }))}
+                      placeholder="e.g., /GeForce RTX 4090.png"
                     />
                   </div>
                   <Button type="submit" className="w-full">

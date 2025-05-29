@@ -63,7 +63,7 @@ export default function ShoppingCartComponent({ onCheckout }: ShoppingCartProps)
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="w-full sm:w-32 h-24 relative">
                   <Image
-                    src={item.image || "/placeholder.svg"}
+                    src={item.image}
                     alt={item.name}
                     fill
                     className="object-cover rounded-md"
