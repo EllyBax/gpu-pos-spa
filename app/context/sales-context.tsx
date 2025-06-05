@@ -1,78 +1,103 @@
-"use client"
+// context/sales-context.tsx
+"use-client";
+import { createContext, useContext, useReducer, ReactNode } from "react";
 
-import type React from "react"
-
-import { createContext, useContext, useReducer, type ReactNode, useEffect } from "react"
-import type { CartItem } from "./cart-context"
-
+// Updated Sale interface with paymentMethod and expanded status options
 export interface Sale {
-  id: string
-  date: string
-  items: CartItem[]
-  total: number
+  id: string;
+  date: string;
+  items: CartItem[];
+  total: number;
   customerInfo: {
-    name: string
-    email: string
-    phone: string
-    address: string
-  }
-  status: "pending" | "delivered" | "cancelled"
+    name: string;
+    email: string;
+    phone: string;
+    address: string;
+  };
+  paymentMethod: "stripe" | "cod"; // Cash on Delivery
+  status: "pending" | "paid" | "delivered" | "cancelled";
+}
+
+// Assuming CartItem interface (update according to your actual CartItem type)
+interface CartItem {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+  stock: number;
 }
 
 interface SalesState {
-  sales: Sale[]
+  sales: Sale[];
+  totalRevenue: number;
 }
 
 type SalesAction =
-  | { type: "SET_SALES"; payload: Sale[] }
   | { type: "ADD_SALE"; payload: Sale }
-  | { type: "UPDATE_SALE_STATUS"; payload: { id: string; status: Sale["status"] } }
+  | {
+      type: "UPDATE_SALE_STATUS";
+      payload: { id: string; status: Sale["status"] };
+    }
+  | { type: "LOAD_SALES"; payload: Sale[] };
 
-const SalesContext = createContext<{
-  state: SalesState
-  dispatch: React.Dispatch<SalesAction>
-} | null>(null)
+const initialState: SalesState = {
+  sales: [],
+  totalRevenue: 0,
+};
 
 function salesReducer(state: SalesState, action: SalesAction): SalesState {
   switch (action.type) {
-    case "SET_SALES":
-      return { sales: action.payload }
     case "ADD_SALE":
-      return { sales: [...state.sales, action.payload] }
+      return {
+        ...state,
+        sales: [...state.sales, action.payload],
+        totalRevenue: state.totalRevenue + action.payload.total,
+      };
+
     case "UPDATE_SALE_STATUS":
       return {
+        ...state,
         sales: state.sales.map((sale) =>
-          sale.id === action.payload.id ? { ...sale, status: action.payload.status } : sale,
+          sale.id === action.payload.id
+            ? { ...sale, status: action.payload.status }
+            : sale
         ),
-      }
+      };
+
+    case "LOAD_SALES":
+      return {
+        ...state,
+        sales: action.payload,
+        totalRevenue: action.payload.reduce(
+          (total, sale) => total + sale.total,
+          0
+        ),
+      };
+
     default:
-      return state
+      return state;
   }
 }
 
+const SalesContext = createContext<{
+  state: SalesState;
+  dispatch: React.Dispatch<SalesAction>;
+} | null>(null);
+
 export function SalesProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(salesReducer, { sales: [] })
+  const [state, dispatch] = useReducer(salesReducer, initialState);
 
-  useEffect(() => {
-    // Load sales from localStorage
-    const savedSales = localStorage.getItem("gpu-sales")
-    if (savedSales) {
-      dispatch({ type: "SET_SALES", payload: JSON.parse(savedSales) })
-    }
-  }, [])
-
-  useEffect(() => {
-    // Save sales to localStorage whenever it changes
-    localStorage.setItem("gpu-sales", JSON.stringify(state.sales))
-  }, [state.sales])
-
-  return <SalesContext.Provider value={{ state, dispatch }}>{children}</SalesContext.Provider>
+  return (
+    <SalesContext.Provider value={{ state, dispatch }}>
+      {children}
+    </SalesContext.Provider>
+  );
 }
 
 export function useSales() {
-  const context = useContext(SalesContext)
+  const context = useContext(SalesContext);
   if (!context) {
-    throw new Error("useSales must be used within a SalesProvider")
+    throw new Error("useSales must be used within a SalesProvider");
   }
-  return context
+  return context;
 }

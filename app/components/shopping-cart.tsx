@@ -1,46 +1,54 @@
-"use client"
+"use client";
 
-import { Minus, Plus, Trash2, ShoppingBag } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { useCart } from "../context/cart-context"
-import Image from "next/image"
-import { useToast } from "@/hooks/use-toast"
+import { Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { useCart } from "../context/cart-context";
+import Image from "next/image";
+import { useToast } from "@/hooks/use-toast";
 
 interface ShoppingCartProps {
-  onCheckout: () => void
+  onCheckout: () => void;
 }
 
-export default function ShoppingCartComponent({ onCheckout }: ShoppingCartProps) {
-  const { state, dispatch } = useCart()
-  const { toast } = useToast()
+export default function ShoppingCartComponent({
+  onCheckout,
+}: ShoppingCartProps) {
+  const { state, dispatch } = useCart();
+  const { toast } = useToast();
 
   const updateQuantity = (id: string, quantity: number) => {
-    const item = state.items.find((i) => i.id === id)
-    dispatch({ type: "UPDATE_QUANTITY", payload: { id, quantity } })
+    const item = state.items.find((i) => i.id === id);
+    dispatch({ type: "UPDATE_QUANTITY", payload: { id, quantity } });
 
     if (item) {
       toast({
         title: "Cart updated",
         description: `${item.name} quantity updated to ${quantity}.`,
         duration: 1500,
-      })
+      });
     }
-  }
+  };
 
   const removeItem = (id: string) => {
-    const item = state.items.find((i) => i.id === id)
-    dispatch({ type: "REMOVE_ITEM", payload: id })
+    const item = state.items.find((i) => i.id === id);
+    dispatch({ type: "REMOVE_ITEM", payload: id });
 
     if (item) {
       toast({
         title: "Item removed",
         description: `${item.name} has been removed from your cart.`,
         duration: 2000,
-      })
+      });
     }
-  }
+  };
 
   if (state.items.length === 0) {
     return (
@@ -48,10 +56,12 @@ export default function ShoppingCartComponent({ onCheckout }: ShoppingCartProps)
         <CardContent>
           <ShoppingBag className="h-16 w-16 mx-auto text-gray-400 mb-4" />
           <CardTitle className="mb-2">Your cart is empty</CardTitle>
-          <CardDescription>Add some GPUs to your cart to get started.</CardDescription>
+          <CardDescription>
+            Add some GPUs to your cart to get started.
+          </CardDescription>
         </CardContent>
       </Card>
-    )
+    );
   }
 
   return (
@@ -74,7 +84,9 @@ export default function ShoppingCartComponent({ onCheckout }: ShoppingCartProps)
                   <p className="text-gray-600">
                     {item.manufacturer} • {item.memory}
                   </p>
-                  <p className="text-xl font-bold mt-2">${item.price.toLocaleString()}</p>
+                  <p className="text-xl font-bold mt-2">
+                    ${item.price.toLocaleString()}
+                  </p>
                 </div>
                 <div className="flex flex-col sm:items-end gap-2">
                   <div className="flex items-center space-x-2">
@@ -141,5 +153,5 @@ export default function ShoppingCartComponent({ onCheckout }: ShoppingCartProps)
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

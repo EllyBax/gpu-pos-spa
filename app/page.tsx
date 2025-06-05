@@ -1,25 +1,37 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { ShoppingCart, Package, BarChart3, Settings, Monitor, Shield } from "lucide-react"
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import GPUCatalog from "./components/gpu-catalog"
-import ShoppingCartComponent from "./components/shopping-cart"
-import CheckoutForm from "./components/checkout-form"
-import SalesDashboard from "./components/sales-dashboard"
-import InventoryManagement from "./components/inventory-management"
-import { CartProvider } from "./context/cart-context"
-import { InventoryProvider } from "./context/inventory-context"
-import { SalesProvider } from "./context/sales-context"
-import AdminInterface from "./components/admin-interface"
-import { useCart } from "./context/cart-context"
+import { useState, useEffect } from "react";
+import {
+  ShoppingCart,
+  Package,
+  BarChart3,
+  Settings,
+  Monitor,
+  Shield,
+} from "lucide-react";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import GPUCatalog from "./components/gpu-catalog";
+import ShoppingCartComponent from "./components/shopping-cart";
+import CheckoutForm from "./components/checkout-form";
+import SalesDashboard from "./components/sales-dashboard";
+import InventoryManagement from "./components/inventory-management";
+import { CartProvider } from "./context/cart-context";
+import { InventoryProvider } from "./context/inventory-context";
+import { SalesProvider } from "./context/sales-context";
+import AdminInterface from "./components/admin-interface";
+import { useCart } from "./context/cart-context";
 
 // Separate component for the main app content that uses cart context
 function MainAppContent() {
-  const [activeTab, setActiveTab] = useState("catalog")
-  const { state: cartState } = useCart()
+  const [activeTab, setActiveTab] = useState("catalog");
+  const { state: cartState } = useCart();
 
   return (
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -29,7 +41,10 @@ function MainAppContent() {
             <Package className="h-4 w-4" />
             <span className="hidden sm:inline">Catalog</span>
           </TabsTrigger>
-          <TabsTrigger value="cart" className="flex items-center space-x-2 relative">
+          <TabsTrigger
+            value="cart"
+            className="flex items-center space-x-2 relative"
+          >
             <ShoppingCart className="h-4 w-4" />
             <span className="hidden sm:inline">Cart</span>
             {cartState.items.length > 0 && (
@@ -45,11 +60,17 @@ function MainAppContent() {
             <Settings className="h-4 w-4" />
             <span className="hidden sm:inline">Checkout</span>
           </TabsTrigger>
-          <TabsTrigger value="dashboard" className="flex items-center space-x-2">
+          <TabsTrigger
+            value="dashboard"
+            className="flex items-center space-x-2"
+          >
             <BarChart3 className="h-4 w-4" />
             <span className="hidden sm:inline">Dashboard</span>
           </TabsTrigger>
-          <TabsTrigger value="inventory" className="flex items-center space-x-2">
+          <TabsTrigger
+            value="inventory"
+            className="flex items-center space-x-2"
+          >
             <Package className="h-4 w-4" />
             <span className="hidden sm:inline">Inventory</span>
           </TabsTrigger>
@@ -84,19 +105,21 @@ function MainAppContent() {
         </TabsContent>
       </Tabs>
     </main>
-  )
+  );
 }
 
 export default function GPUPOSApp() {
-  const [isAnonymousUser, setIsAnonymousUser] = useState(false)
+  const [isAnonymousUser, setIsAnonymousUser] = useState(false);
 
   useEffect(() => {
     // Simulate anonymous sign-in
-    const anonymousId = localStorage.getItem("anonymousUserId") || `anon_${Date.now()}`
-    localStorage.setItem("anonymousUserId", anonymousId)
-    setIsAnonymousUser(true)
-  }, [])
+    const anonymousId =
+      localStorage.getItem("anonymousUserId") || `anon_${Date.now()}`;
+    localStorage.setItem("anonymousUserId", anonymousId);
+    setIsAnonymousUser(true);
+  }, []);
 
+  const userId = localStorage.getItem("anonymousUserId");
   if (!isAnonymousUser) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -108,7 +131,7 @@ export default function GPUPOSApp() {
           </CardHeader>
         </Card>
       </div>
-    )
+    );
   }
 
   return (
@@ -121,11 +144,16 @@ export default function GPUPOSApp() {
                 <div className="flex justify-between items-center h-16">
                   <div className="flex items-center space-x-2">
                     <Monitor className="h-8 w-8 text-blue-600" />
-                    <h1 className="text-xl font-bold text-gray-900">GPU Store POS</h1>
+                    <h1 className="text-xl font-bold text-gray-900">
+                      GPU Store POS
+                    </h1>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <Badge variant="secondary" className="bg-green-100 text-green-800">
-                      Anonymous User
+                    <Badge
+                      variant="secondary"
+                      className="bg-green-100 text-green-800"
+                    >
+                      User: {userId ?? "Refresh page to generate ID!"}
                     </Badge>
                   </div>
                 </div>
@@ -137,5 +165,5 @@ export default function GPUPOSApp() {
         </CartProvider>
       </InventoryProvider>
     </SalesProvider>
-  )
+  );
 }
